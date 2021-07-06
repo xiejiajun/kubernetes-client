@@ -760,7 +760,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       .append(customResourceDefinition.getVersion())
       .append("/");
 
-    if(customResourceDefinition.getScope().equals("Namespaced") && namespace != null) {
+    // TODO 解决非Namespace Scope的资源不设置Scope时的空指针异常
+    if("Namespaced".equals(customResourceDefinition.getScope()) && namespace != null) {
       urlBuilder.append("namespaces/").append(namespace).append("/");
     }
     urlBuilder.append(customResourceDefinition.getPlural());
