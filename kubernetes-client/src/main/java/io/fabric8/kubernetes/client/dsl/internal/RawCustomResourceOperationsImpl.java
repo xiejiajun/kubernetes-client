@@ -755,8 +755,10 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
 
     urlBuilder.append(config.getMasterUrl().endsWith("/") ? "" : "/");
     if (customResourceDefinition.getGroup() != null && customResourceDefinition.getGroup().trim().length() > 0) {
+      // TODO CRD资源的url前缀为apis
       urlBuilder.append("apis/").append(customResourceDefinition.getGroup()).append("/");
     } else {
+      // TODO 内置类型的url前缀为api/
       urlBuilder.append("api/");
     }
     urlBuilder
