@@ -754,9 +754,12 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     StringBuilder urlBuilder = new StringBuilder(config.getMasterUrl());
 
     urlBuilder.append(config.getMasterUrl().endsWith("/") ? "" : "/");
-    urlBuilder.append("apis/")
-      .append(customResourceDefinition.getGroup())
-      .append("/")
+    if (customResourceDefinition.getGroup() != null && customResourceDefinition.getGroup().trim().length() > 0) {
+      urlBuilder.append("apis/").append(customResourceDefinition.getGroup()).append("/");
+    } else {
+      urlBuilder.append("api/");
+    }
+    urlBuilder
       .append(customResourceDefinition.getVersion())
       .append("/");
 
