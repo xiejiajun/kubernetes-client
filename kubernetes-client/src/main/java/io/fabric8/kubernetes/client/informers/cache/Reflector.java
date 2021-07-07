@@ -61,7 +61,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     this.lastSyncResourceVersion = new AtomicReference<>();
     this.resyncExecutor = resyncExecutor;
     // TODO onClose设置为this::startWatcher，onHttpGone(http连接过期)设置为this::reListAndSync，从而在Watcher断开连接的时候自动重新
-    //  调用startWatcher方法，以此来实现client-go中Informer的RetryWatcher机制(这种递归调用方式需要注意调用栈深度）
+    //  调用startWatcher方法，以此来实现client-go中Informer的RetryWatcher机制
+    //  注意：这种重试方案是通过回调机制完成的(每次startWatcher都不断注册startWatcher为onClose回调)，不是递归，所以不存在深层递归导致调用栈溢出的问题
     this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::startWatcher, this::reListAndSync);
     this.isActive = new AtomicBoolean(true);
     this.isWatcherStarted = new AtomicBoolean(false);
